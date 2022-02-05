@@ -25,15 +25,15 @@ public class TelegramService  {
 
     @EventListener(ApplicationReadyEvent.class)
     public void registerBot() {
-        try {
-            DefaultWebhook apiWebhook = new DefaultWebhook();
-            apiWebhook.setInternalUrl("http://localhost:9801");
-            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class, apiWebhook);
-            SetWebhook webhook = new SetWebhook();
-            webhook.setUrl(botConfiguration.getUrl());
-            botsApi.registerBot(new EnquestBot(botConfiguration), webhook);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            DefaultWebhook apiWebhook = new DefaultWebhook();
+//            apiWebhook.setInternalUrl("http://localhost:9801");
+//            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class, apiWebhook);
+//            SetWebhook webhook = new SetWebhook();
+//            webhook.setUrl(botConfiguration.getUrl());
+//            botsApi.registerBot(new EnquestBot(botConfiguration), webhook);
+//        } catch (TelegramApiException e) {
+//            e.printStackTrace();
+//        }
     }
 }
