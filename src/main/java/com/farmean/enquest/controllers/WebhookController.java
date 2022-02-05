@@ -1,6 +1,8 @@
 package com.farmean.enquest.controllers;
 
 import com.farmean.enquest.bot.EnquestBot;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +36,9 @@ public class WebhookController {
     @PostMapping("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public BotApiMethod<?> update(@RequestBody Update update) throws TelegramApiValidationException {
+    public BotApiMethod<?> update(@RequestBody Update update) throws TelegramApiValidationException, JsonProcessingException {
         try {
-            LOGGER.warn("Update: {}", update);
+            LOGGER.warn("Update: {}", new ObjectMapper().writeValueAsString(update));
 
             BotApiMethod<?> response = enquestBot.onWebhookUpdateReceived(update);
             if (response != null) {

@@ -1,13 +1,10 @@
 package com.farmean.enquest.bot;
 
-import com.farmean.enquest.models.User;
 import com.farmean.enquest.services.users.UsersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.Optional;
@@ -18,10 +15,12 @@ public class EnquestBot {
 
     private final UsersService usersService;
     private final MessageHandler messageHandler;
+    private final CallbackQueryHandler callbackQueryHandler;
 
-    public EnquestBot(UsersService usersService, MessageHandler messageHandler) {
+    public EnquestBot(UsersService usersService, MessageHandler messageHandler, CallbackQueryHandler callbackQueryHandler) {
         this.usersService = usersService;
         this.messageHandler = messageHandler;
+        this.callbackQueryHandler = callbackQueryHandler;
     }
 
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
@@ -30,7 +29,7 @@ public class EnquestBot {
 
     private Optional<BotApiMethod<?>> handleUpdate(Update update) {
         if (update.hasCallbackQuery()) {
-            CallbackQuery callbackQuery = update.getCallbackQuery();
+            return Optional.ofNullable(callbackQueryHandler.processCallbackQuery(update.getCallbackQuery()));
 
         } else if (update.hasMessage()) {
             return Optional.of(messageHandler.processMessage(update.getMessage()));
