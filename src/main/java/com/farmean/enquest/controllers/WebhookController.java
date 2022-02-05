@@ -1,6 +1,9 @@
 package com.farmean.enquest.controllers;
 
 import com.farmean.enquest.services.bot.EnquestBot;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +38,10 @@ public class WebhookController {
     @PostMapping("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(Update update) {
+    public Response update(@RequestBody String payload) {
+        LOGGER.warn("payload = {}", payload);
         try {
+            Update update = new ObjectMapper().readValue(payload, Update.class);
             BotApiMethod<?> response = enquestBot.onWebhookUpdateReceived(update);
             if (response != null) {
                 response.validate();
@@ -44,6 +49,12 @@ public class WebhookController {
             return Response.ok(response).build();
         } catch (TelegramApiValidationException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
+            return Response.serverError().build();
+        } catch (JsonMappingException e) {
+            LOGGER.warn("Json mapping exception", e);
+            return Response.serverError().build();
+        } catch (JsonProcessingException e) {
+            LOGGER.warn("Json processing exception", e);
             return Response.serverError().build();
         }
     }
