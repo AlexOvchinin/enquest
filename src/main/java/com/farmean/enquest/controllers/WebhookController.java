@@ -46,7 +46,9 @@ public class WebhookController {
             if (response != null) {
                 response.validate();
             }
-            return Response.ok(response).build();
+
+            String responseString = new ObjectMapper().writeValueAsString(update);
+            return Response.ok(responseString).build();
         } catch (TelegramApiValidationException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
             return Response.serverError().build();
