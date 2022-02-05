@@ -14,7 +14,7 @@ public class TestMeCallbackCommandHandler implements CallbackCommandHandler {
     @Override
     public BotApiMethod<?> handle(CallbackQuery callbackQuery) {
         String[] parts = callbackQuery.getData().split("_");
-        String answer = parts[2];
+        String answer = parts[1];
         boolean rightAnswer = answer.equalsIgnoreCase("right");
 
         EditMessageText editMessageText = new EditMessageText();
