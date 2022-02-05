@@ -6,4 +6,6 @@ public interface TestQuestion {
     String getText();
 
     Collection<String> getOptions();
+
+    String correctOption();
 }

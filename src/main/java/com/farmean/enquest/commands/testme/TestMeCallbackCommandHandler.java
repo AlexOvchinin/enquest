@@ -15,7 +15,7 @@ public class TestMeCallbackCommandHandler implements CallbackCommandHandler {
     public BotApiMethod<?> handle(CallbackQuery callbackQuery) {
         String[] parts = callbackQuery.getData().split("_");
         String answer = parts[2];
-        boolean rightAnswer = answer.equalsIgnoreCase("идти");
+        boolean rightAnswer = answer.equalsIgnoreCase("right");
 
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setChatId(callbackQuery.getMessage().getChatId().toString());

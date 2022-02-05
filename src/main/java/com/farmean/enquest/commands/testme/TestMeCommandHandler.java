@@ -40,7 +40,7 @@ public class TestMeCommandHandler implements CommandHandler<TestMeCommand> {
         for (String answer : testQuestion.getOptions()) {
             InlineKeyboardButton keyboardRow = new InlineKeyboardButton();
             keyboardRow.setText(answer);
-            keyboardRow.setCallbackData(getCommand() + "_" + testQuestion.getText() + "_" + answer);
+            keyboardRow.setCallbackData(getCommand() + "_" + (answer.equalsIgnoreCase(testQuestion.correctOption()) ? "right" : "wrong"));
             rows.add(keyboardRow);
         }
 

@@ -1,5 +1,9 @@
 package com.farmean.enquest.services.dictionary;
 
-public interface UserDictionary {
+import java.util.Map;
+
+public interface GlobalDictionary {
     void add(String word, String translation);
+
+    Map<String, String> getWords();
 }
