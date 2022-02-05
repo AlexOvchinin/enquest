@@ -56,6 +56,9 @@ public class WebhookController {
         } catch (JsonProcessingException e) {
             LOGGER.warn("Json processing exception", e);
             return Response.serverError().build();
+        } catch (Exception e) {
+            LOGGER.warn("Random exception", e);
+            return Response.serverError().build();
         }
     }
 }
