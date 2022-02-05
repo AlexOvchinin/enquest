@@ -50,6 +50,6 @@ public class TestMeAgainCallbackCommandHandler implements CallbackCommandHandler
 
     @Override
     public String getPrefix() {
-        return "/testmeagain";
+        return "/testmeagain_";
     }
 }

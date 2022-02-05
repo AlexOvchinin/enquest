@@ -21,7 +21,7 @@ public class TestMeCallbackCommandHandler implements CallbackCommandHandler {
 
         InlineKeyboardButton oneMoreTimeButton = new InlineKeyboardButton();
         oneMoreTimeButton.setText("Попробовать ещё разок");
-        oneMoreTimeButton.setCallbackData("/testMeAgain_");
+        oneMoreTimeButton.setCallbackData("/testmeagain_");
 
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setChatId(callbackQuery.getMessage().getChatId().toString());
