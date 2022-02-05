@@ -50,7 +50,7 @@ public class TestMeCommandHandler implements CommandHandler<TestMeCommand> {
         SendMessage reply = new SendMessage();
         reply.setChatId(message.getChatId().toString());
         reply.setText(testQuestion.getText());
-        reply.setReplyMarkup(replyKeyboardMarkup);
+//        reply.setReplyMarkup(replyKeyboardMarkup);
 
         return reply;
     }
