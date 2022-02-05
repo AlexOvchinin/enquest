@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
@@ -28,23 +30,21 @@ public class TestMeCommandHandler implements CommandHandler<TestMeCommand> {
     public BotApiMethod<?> handle(Message message) {
         TestQuestion testQuestion = testQuestionGenerator.generate();
 
-        List<KeyboardRow> rows = new ArrayList<>();
+        List<InlineKeyboardButton> rows = new ArrayList<>();
 
-        KeyboardRow questionRow = new KeyboardRow();
-        questionRow.add(testQuestion.getText());
+        InlineKeyboardButton questionRow = new InlineKeyboardButton();
+        questionRow.setText(testQuestion.getText());
+//        questionRow.add(testQuestion.getText());
         rows.add(questionRow);
 
         for (String answer : testQuestion.getOptions()) {
-            KeyboardRow keyboardRow = new KeyboardRow();
-            keyboardRow.add(answer);
+            InlineKeyboardButton keyboardRow = new InlineKeyboardButton();
+            keyboardRow.setText(answer);
             rows.add(keyboardRow);
         }
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        replyKeyboardMarkup.setKeyboard(rows);
-        replyKeyboardMarkup.setOneTimeKeyboard(true);
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
+        InlineKeyboardMarkup replyKeyboardMarkup = new InlineKeyboardMarkup();
+        replyKeyboardMarkup.setKeyboard(List.of(rows));
 
         SendMessage reply = new SendMessage();
         reply.setChatId(message.getChatId().toString());
