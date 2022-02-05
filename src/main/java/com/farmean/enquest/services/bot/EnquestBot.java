@@ -3,12 +3,12 @@ package com.farmean.enquest.services.bot;
 import com.farmean.enquest.configuration.BotConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.bots.TelegramWebhookBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public class EnquestBot extends TelegramLongPollingBot {
+public class EnquestBot extends TelegramWebhookBot {
     private static final Logger LOGGER = LoggerFactory.getLogger(EnquestBot.class);
 
     private final BotConfiguration botConfiguration;
@@ -28,7 +28,7 @@ public class EnquestBot extends TelegramLongPollingBot {
     }
 
     @Override
-    public void onUpdateReceived(Update update) {
+    public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
             message.setChatId(update.getMessage().getChatId().toString());
@@ -36,11 +36,14 @@ public class EnquestBot extends TelegramLongPollingBot {
 
             LOGGER.warn("Chat id: {}, text: {}", message.getChatId(), message.getText());
 
-            try {
-                execute(message); // Call method to send the message
-            } catch (TelegramApiException e) {
-                LOGGER.error("Error while processing message {}", message, e);
-            }
+            return message;
         }
+
+        return null;
+    }
+
+    @Override
+    public String getBotPath() {
+        return "update";
     }
 }
