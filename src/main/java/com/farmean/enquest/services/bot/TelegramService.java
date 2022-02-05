@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.Webhook;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import org.telegram.telegrambots.updatesreceivers.DefaultWebhook;
 
 @Service
 public class TelegramService  {
@@ -24,7 +26,9 @@ public class TelegramService  {
     @EventListener(ApplicationReadyEvent.class)
     public void registerBot() {
         try {
-            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+            DefaultWebhook apiWebhook = new DefaultWebhook();
+            apiWebhook.setInternalUrl("http://localhost:9801");
+            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class, apiWebhook);
             SetWebhook webhook = new SetWebhook();
             webhook.setUrl(botConfiguration.getUrl());
             botsApi.registerBot(new EnquestBot(botConfiguration), webhook);
