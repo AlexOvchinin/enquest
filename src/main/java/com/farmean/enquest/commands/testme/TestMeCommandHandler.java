@@ -35,7 +35,7 @@ public class TestMeCommandHandler implements CommandHandler<TestMeCommand> {
         InlineKeyboardButton questionRow = new InlineKeyboardButton();
         questionRow.setText(testQuestion.getText());
 //        questionRow.add(testQuestion.getText());
-        rows.add(questionRow);
+//        rows.add(questionRow);
 
         for (String answer : testQuestion.getOptions()) {
             InlineKeyboardButton keyboardRow = new InlineKeyboardButton();
@@ -50,7 +50,7 @@ public class TestMeCommandHandler implements CommandHandler<TestMeCommand> {
         SendMessage reply = new SendMessage();
         reply.setChatId(message.getChatId().toString());
         reply.setText(testQuestion.getText());
-//        reply.setReplyMarkup(replyKeyboardMarkup);
+        reply.setReplyMarkup(replyKeyboardMarkup);
 
         return reply;
     }
