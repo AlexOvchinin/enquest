@@ -38,7 +38,7 @@ public class WebhookController {
     @PostMapping("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@RequestBody String payload) {
+    public BotApiMethod<?> update(@RequestBody String payload) throws TelegramApiValidationException, JsonProcessingException {
         LOGGER.warn("payload = {}", payload);
         try {
             Update update = new ObjectMapper().readValue(payload, Update.class);
@@ -47,20 +47,25 @@ public class WebhookController {
                 response.validate();
             }
 
-            String responseString = new ObjectMapper().writeValueAsString(update);
-            return Response.ok(responseString).build();
+//            String responseString = new ObjectMapper().writeValueAsString(response);
+//            return Response.ok(response).build();
+            return response;
         } catch (TelegramApiValidationException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
-            return Response.serverError().build();
+//            return Response.serverError().build();
+            throw e;
         } catch (JsonMappingException e) {
             LOGGER.warn("Json mapping exception", e);
-            return Response.serverError().build();
+//            return Response.serverError().build();
+            throw e;
         } catch (JsonProcessingException e) {
             LOGGER.warn("Json processing exception", e);
-            return Response.serverError().build();
+//            return Response.serverError().build();
+            throw e;
         } catch (Exception e) {
             LOGGER.warn("Random exception", e);
-            return Response.serverError().build();
+//            return Response.serverError().build();
+            throw e;
         }
     }
 }
