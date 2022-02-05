@@ -6,8 +6,10 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.Collections;
+import java.util.List;
 
 @Component
 public class TestMeCallbackCommandHandler implements CallbackCommandHandler {
@@ -17,11 +19,15 @@ public class TestMeCallbackCommandHandler implements CallbackCommandHandler {
         String answer = parts[1];
         boolean rightAnswer = answer.equalsIgnoreCase("right");
 
+        InlineKeyboardButton oneMoreTimeButton = new InlineKeyboardButton();
+        oneMoreTimeButton.setText("Попробовать ещё разок");
+        oneMoreTimeButton.setCallbackData("testMeAgain");
+
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setChatId(callbackQuery.getMessage().getChatId().toString());
         editMessageText.setMessageId(callbackQuery.getMessage().getMessageId());
         editMessageText.setText(rightAnswer ? "Правильно! Возьми пирожок" : "Неправильно! Попробуй ещё");
-        editMessageText.setReplyMarkup(new InlineKeyboardMarkup(Collections.emptyList()));
+        editMessageText.setReplyMarkup(new InlineKeyboardMarkup(List.of(List.of(oneMoreTimeButton))));
 
         return editMessageText;
     }

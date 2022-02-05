@@ -18,7 +18,6 @@ public class CallbackQueryHandler {
         commandHandlers.forEach(commandHandler -> this.commandHandlers.put(commandHandler.getPrefix(), commandHandler));
     }
 
-
     public BotApiMethod<?> processCallbackQuery(CallbackQuery callbackQuery) {
         String prefix = callbackQuery.getData().substring(0, callbackQuery.getData().indexOf('_'));
         CallbackCommandHandler commandHandler = commandHandlers.get(prefix);
