@@ -22,7 +22,7 @@ public class MessageHandler {
     }
 
     public BotApiMethod<?> processMessage(Message message) {
-        CommandHandler<?> commandHandler = commandHandlers.get(message.getText().toLowerCase());
+        CommandHandler<?> commandHandler = message.hasText() ? commandHandlers.get(message.getText().toLowerCase()) : null;
         if (commandHandler != null) {
             return commandHandler.handle(message);
         } else {
