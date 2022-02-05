@@ -36,6 +36,8 @@ public class WebhookController {
     @Produces(MediaType.APPLICATION_JSON)
     public BotApiMethod<?> update(@RequestBody Update update) throws TelegramApiValidationException {
         try {
+            LOGGER.warn("Update: {}", update);
+
             BotApiMethod<?> response = enquestBot.onWebhookUpdateReceived(update);
             if (response != null) {
                 response.validate();
