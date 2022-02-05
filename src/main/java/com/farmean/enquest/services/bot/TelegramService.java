@@ -27,7 +27,7 @@ public class TelegramService  {
     public void registerBot() {
         try {
             DefaultWebhook apiWebhook = new DefaultWebhook();
-            apiWebhook.setInternalUrl("http://localhost:8080");
+            apiWebhook.setInternalUrl(botConfiguration.getUrl());
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class, apiWebhook);
             SetWebhook webhook = new SetWebhook();
             webhook.setUrl(botConfiguration.getUrl());
