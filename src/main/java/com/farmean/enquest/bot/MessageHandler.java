@@ -28,7 +28,7 @@ public class MessageHandler {
         } else {
             SendMessage sendMessage = new SendMessage(); // Create a SendMessage object with mandatory fields
             sendMessage.setChatId(message.getChatId().toString());
-            sendMessage.setText("Неизвестная команда, попробуйте написать // чтобы узнать список доступных команд");
+            sendMessage.setText("Неизвестная команда, попробуйте написать / чтобы узнать список доступных команд");
             return sendMessage;
         }
     }

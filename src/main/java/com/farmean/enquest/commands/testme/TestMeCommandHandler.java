@@ -30,26 +30,21 @@ public class TestMeCommandHandler implements CommandHandler<TestMeCommand> {
     public BotApiMethod<?> handle(Message message) {
         TestQuestion testQuestion = testQuestionGenerator.generate();
 
-        List<InlineKeyboardButton> rows = new ArrayList<>();
-
-        InlineKeyboardButton questionRow = new InlineKeyboardButton();
-        questionRow.setText(testQuestion.getText());
-//        questionRow.add(testQuestion.getText());
-//        rows.add(questionRow);
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
         for (String answer : testQuestion.getOptions()) {
             InlineKeyboardButton keyboardRow = new InlineKeyboardButton();
             keyboardRow.setText(answer);
             keyboardRow.setCallbackData(getCommand() + "_" + (answer.equalsIgnoreCase(testQuestion.correctOption()) ? "right" : "wrong"));
-            rows.add(keyboardRow);
+            rows.add(List.of(keyboardRow));
         }
 
         InlineKeyboardMarkup replyKeyboardMarkup = new InlineKeyboardMarkup();
-        replyKeyboardMarkup.setKeyboard(List.of(rows));
+        replyKeyboardMarkup.setKeyboard(rows);
 
         SendMessage reply = new SendMessage();
         reply.setChatId(message.getChatId().toString());
-        reply.setText(testQuestion.getText());
+        reply.setText("Как переводится слово \"" + testQuestion.getText() + "\"?");
         reply.setReplyMarkup(replyKeyboardMarkup);
 
         return reply;
