@@ -1,11 +1,15 @@
 package com.farmean.enquest.commands.testme;
 
 import com.farmean.enquest.commands.CallbackCommandHandler;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
+import java.util.Collections;
+
+@Component
 public class TestMeCallbackCommandHandler implements CallbackCommandHandler {
     @Override
     public BotApiMethod<?> handle(CallbackQuery callbackQuery) {
@@ -17,7 +21,7 @@ public class TestMeCallbackCommandHandler implements CallbackCommandHandler {
         editMessageText.setChatId(callbackQuery.getMessage().getChatId().toString());
         editMessageText.setMessageId(callbackQuery.getMessage().getMessageId());
         editMessageText.setText(rightAnswer ? "Правильно! Возьми пирожок" : "Неправильно! Попробуй ещё");
-        editMessageText.setReplyMarkup(new InlineKeyboardMarkup());
+        editMessageText.setReplyMarkup(new InlineKeyboardMarkup(Collections.emptyList()));
 
         return editMessageText;
     }
