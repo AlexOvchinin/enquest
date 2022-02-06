@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,11 +16,13 @@ public class CallbackQueryHandler {
     Map<String, CallbackCommandHandler> commandHandlers = new HashMap<>();
 
     public CallbackQueryHandler(Collection<CallbackCommandHandler> commandHandlers) {
-        commandHandlers.forEach(commandHandler -> this.commandHandlers.put(commandHandler.getPrefix(), commandHandler));
+        commandHandlers.forEach(commandHandler -> this.commandHandlers.put(commandHandler.getCommand(), commandHandler));
     }
 
+    @Nullable
     public BotApiMethod<?> processCallbackQuery(CallbackQuery callbackQuery) {
-        String prefix = callbackQuery.getData().substring(0, callbackQuery.getData().indexOf('_'));
+        int indexOfUnderscore = callbackQuery.getData().indexOf('_');
+        String prefix = indexOfUnderscore == -1 ? callbackQuery.getData() : callbackQuery.getData().substring(0, indexOfUnderscore);
         CallbackCommandHandler commandHandler = commandHandlers.get(prefix);
         if (commandHandler != null) {
             return commandHandler.handle(callbackQuery);

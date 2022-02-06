@@ -1,6 +1,6 @@
 package com.farmean.enquest.bot;
 
-import com.farmean.enquest.commands.CommandHandler;
+import com.farmean.enquest.commands.MessageCommandHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -14,17 +14,17 @@ import java.util.Map;
 @Component
 public class MessageHandler {
 
-    Map<String, CommandHandler<?>> commandHandlers = new HashMap<>();
+    Map<String, MessageCommandHandler> commandHandlers = new HashMap<>();
 
     @Autowired
-    public MessageHandler(Collection<CommandHandler<?>> commandHandlers) {
-        commandHandlers.forEach(commandHandler -> this.commandHandlers.put(commandHandler.getCommand(), commandHandler));
+    public MessageHandler(Collection<MessageCommandHandler> messageCommandHandlers) {
+        messageCommandHandlers.forEach(messageCommandHandler -> this.commandHandlers.put(messageCommandHandler.getCommand(), messageCommandHandler));
     }
 
     public BotApiMethod<?> processMessage(Message message) {
-        CommandHandler<?> commandHandler = message.hasText() ? commandHandlers.get(message.getText().toLowerCase()) : null;
-        if (commandHandler != null) {
-            return commandHandler.handle(message);
+        MessageCommandHandler messageCommandHandler = message.hasText() ? commandHandlers.get(message.getText().toLowerCase()) : null;
+        if (messageCommandHandler != null) {
+            return messageCommandHandler.handle(message);
         } else {
             SendMessage sendMessage = new SendMessage(); // Create a SendMessage object with mandatory fields
             sendMessage.setChatId(message.getChatId().toString());

@@ -8,11 +8,10 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.util.Collections;
 import java.util.List;
 
 @Component
-public class TestMeCallbackCommandHandler implements CallbackCommandHandler {
+public class CheckMeCommandHandler implements CallbackCommandHandler {
     @Override
     public BotApiMethod<?> handle(CallbackQuery callbackQuery) {
         String[] parts = callbackQuery.getData().split("_");
@@ -21,7 +20,7 @@ public class TestMeCallbackCommandHandler implements CallbackCommandHandler {
 
         InlineKeyboardButton oneMoreTimeButton = new InlineKeyboardButton();
         oneMoreTimeButton.setText("Попробовать ещё разок");
-        oneMoreTimeButton.setCallbackData("/testmeagain_");
+        oneMoreTimeButton.setCallbackData("/testme");
 
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setChatId(callbackQuery.getMessage().getChatId().toString());
@@ -33,7 +32,7 @@ public class TestMeCallbackCommandHandler implements CallbackCommandHandler {
     }
 
     @Override
-    public String getPrefix() {
-        return "/testme";
+    public String getCommand() {
+        return "/checkme";
     }
 }
