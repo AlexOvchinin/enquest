@@ -1,11 +1,11 @@
 package com.farmean.enquest.models;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface TestQuestion {
     String getText();
 
-    Collection<String> getOptions();
+    List<String> getOptions();
 
     String correctOption();
 }

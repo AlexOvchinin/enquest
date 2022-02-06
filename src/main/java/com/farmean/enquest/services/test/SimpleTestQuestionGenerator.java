@@ -2,6 +2,7 @@ package com.farmean.enquest.services.test;
 
 import com.farmean.enquest.models.TestQuestion;
 import com.farmean.enquest.services.dictionary.GlobalDictionary;
+import com.farmean.enquest.services.questions.QuestionPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,12 +17,11 @@ import java.util.Random;
 public class SimpleTestQuestionGenerator implements TestQuestionGenerator {
 
     private final GlobalDictionary globalDictionary;
-    private final Random random;
+    private final Random random = new Random();
 
     @Autowired
     public SimpleTestQuestionGenerator(GlobalDictionary globalDictionary) {
         this.globalDictionary = globalDictionary;
-        this.random = new Random();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class SimpleTestQuestionGenerator implements TestQuestionGenerator {
             }
 
             @Override
-            public Collection<String> getOptions() {
+            public List<String> getOptions() {
                 return answers;
             }
 

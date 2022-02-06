@@ -21,8 +21,8 @@ public class CallbackQueryHandler {
 
     @Nullable
     public BotApiMethod<?> processCallbackQuery(CallbackQuery callbackQuery) {
-        int indexOfUnderscore = callbackQuery.getData().indexOf('_');
-        String prefix = indexOfUnderscore == -1 ? callbackQuery.getData() : callbackQuery.getData().substring(0, indexOfUnderscore);
+        int colonIndex = callbackQuery.getData().indexOf(':');
+        String prefix = colonIndex == -1 ? callbackQuery.getData() : callbackQuery.getData().substring(0, colonIndex);
         CallbackCommandHandler commandHandler = commandHandlers.get(prefix);
         if (commandHandler != null) {
             return commandHandler.handle(callbackQuery);

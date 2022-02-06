@@ -3,6 +3,7 @@ package com.farmean.enquest.commands.testme;
 import com.farmean.enquest.commands.CallbackCommandHandler;
 import com.farmean.enquest.commands.MessageCommandHandler;
 import com.farmean.enquest.models.TestQuestion;
+import com.farmean.enquest.services.questions.QuestionPool;
 import com.farmean.enquest.services.test.TestQuestionGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,23 +23,28 @@ import java.util.List;
 public class TestMeCommandHandler implements CallbackCommandHandler, MessageCommandHandler {
 
     private final TestQuestionGenerator testQuestionGenerator;
+    private final QuestionPool questionPool;
 
     @Autowired
-    public TestMeCommandHandler(TestQuestionGenerator testQuestionGenerator) {
+    public TestMeCommandHandler(TestQuestionGenerator testQuestionGenerator, QuestionPool questionPool) {
         this.testQuestionGenerator = testQuestionGenerator;
+        this.questionPool = questionPool;
     }
 
     @Override
     @Nullable
     public BotApiMethod<?> handle(Message message) {
         TestQuestion testQuestion = testQuestionGenerator.generate();
+        long questionId = questionPool.addQuestion(testQuestion);
 
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
-        for (String answer : testQuestion.getOptions()) {
+        for (int i = 0; i < testQuestion.getOptions().size(); ++i) {
+            String option = testQuestion.getOptions().get(i);
+
             InlineKeyboardButton keyboardRow = new InlineKeyboardButton();
-            keyboardRow.setText(answer);
-            keyboardRow.setCallbackData("/checkme" + "_" + (answer.equalsIgnoreCase(testQuestion.correctOption()) ? "right" : "wrong"));
+            keyboardRow.setText(option);
+            keyboardRow.setCallbackData("/checkme" + ":" + questionId + ":" + i);
             rows.add(List.of(keyboardRow));
         }
 
@@ -57,13 +63,16 @@ public class TestMeCommandHandler implements CallbackCommandHandler, MessageComm
     @Nullable
     public BotApiMethod<?> handle(CallbackQuery callbackQuery) {
         TestQuestion testQuestion = testQuestionGenerator.generate();
+        long questionId = questionPool.addQuestion(testQuestion);
 
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
-        for (String answer : testQuestion.getOptions()) {
+        for (int i = 0; i < testQuestion.getOptions().size(); ++i) {
+            String option = testQuestion.getOptions().get(i);
+
             InlineKeyboardButton keyboardRow = new InlineKeyboardButton();
-            keyboardRow.setText(answer);
-            keyboardRow.setCallbackData("/checkme" + "_" + (answer.equalsIgnoreCase(testQuestion.correctOption()) ? "right" : "wrong"));
+            keyboardRow.setText(option);
+            keyboardRow.setCallbackData("/checkme" + ":" + questionId + ":" + i);
             rows.add(List.of(keyboardRow));
         }
 
