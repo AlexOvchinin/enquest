@@ -2,7 +2,8 @@ package com.farmean.enquest.commands.testme;
 
 import com.farmean.enquest.commands.CallbackCommandHandler;
 import com.farmean.enquest.models.TestQuestion;
-import com.farmean.enquest.services.questions.QuestionPool;
+import com.farmean.enquest.services.test.persistence.TestQuestionPool;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -15,10 +16,11 @@ import java.util.List;
 @Component
 public class CheckMeCommandHandler implements CallbackCommandHandler {
 
-    private final QuestionPool questionPool;
+    private final TestQuestionPool testQuestionPool;
 
-    public CheckMeCommandHandler(QuestionPool questionPool) {
-        this.questionPool = questionPool;
+    @Autowired
+    public CheckMeCommandHandler(TestQuestionPool testQuestionPool) {
+        this.testQuestionPool = testQuestionPool;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class CheckMeCommandHandler implements CallbackCommandHandler {
         String[] parts = callbackQuery.getData().split(":");
         long questionId = Long.parseLong(parts[1]);
         int selectedOption = Integer.parseInt(parts[2]);
-        TestQuestion testQuestion = questionPool.getQuestion(questionId);
+        TestQuestion testQuestion = testQuestionPool.getQuestion(questionId);
         if (testQuestion != null) {
             int rightOption = -1;
             for (int i = 0; i < testQuestion.getOptions().size(); ++i) {

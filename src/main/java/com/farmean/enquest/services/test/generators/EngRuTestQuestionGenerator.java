@@ -1,27 +1,26 @@
-package com.farmean.enquest.services.test;
+package com.farmean.enquest.services.test.generators;
 
 import com.farmean.enquest.models.TestQuestion;
 import com.farmean.enquest.services.dictionary.GlobalDictionary;
-import com.farmean.enquest.services.questions.QuestionPool;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.farmean.enquest.services.test.persistence.TestQuestionPool;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 @Component
-public class SimpleTestQuestionGenerator implements TestQuestionGenerator {
+public class EngRuTestQuestionGenerator implements TestQuestionGenerator {
 
-    private final GlobalDictionary globalDictionary;
     private final Random random = new Random();
+    private final GlobalDictionary globalDictionary;
+    private final TestQuestionPool testQuestionPool;
 
-    @Autowired
-    public SimpleTestQuestionGenerator(GlobalDictionary globalDictionary) {
+    public EngRuTestQuestionGenerator(GlobalDictionary globalDictionary, TestQuestionPool testQuestionPool) {
         this.globalDictionary = globalDictionary;
+        this.testQuestionPool = testQuestionPool;
     }
 
     @Override
@@ -43,21 +42,6 @@ public class SimpleTestQuestionGenerator implements TestQuestionGenerator {
 
         Collections.shuffle(answers);
 
-        return new TestQuestion() {
-            @Override
-            public String getText() {
-                return question;
-            }
-
-            @Override
-            public List<String> getOptions() {
-                return answers;
-            }
-
-            @Override
-            public String correctOption() {
-                return rightAnswer;
-            }
-        };
+        return testQuestionPool.addQuestion(question, answers, rightAnswer);
     }
 }

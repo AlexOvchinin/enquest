@@ -1,4 +1,4 @@
-package com.farmean.enquest.services.test;
+package com.farmean.enquest.services.test.generators;
 
 import com.farmean.enquest.models.TestQuestion;
 
