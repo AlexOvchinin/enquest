@@ -76,13 +76,17 @@ public class TestMeCommandHandler implements CallbackCommandHandler, MessageComm
             rows.add(List.of(keyboardRow));
         }
 
-        EditMessageText editMessageText = new EditMessageText();
-        editMessageText.setChatId(callbackQuery.getMessage().getChatId().toString());
-        editMessageText.setMessageId(callbackQuery.getMessage().getMessageId());
-        editMessageText.setText("Как переводится слово \"" + testQuestion.getText() + "\"?");
-        editMessageText.setReplyMarkup(new InlineKeyboardMarkup(rows));
+//        EditMessageText result = new EditMessageText();
+//        result.setChatId(callbackQuery.getMessage().getChatId().toString());
+//        result.setMessageId(callbackQuery.getMessage().getMessageId());
+//        result.setText("Как переводится слово \"" + testQuestion.getText() + "\"?");
+//        result.setReplyMarkup(new InlineKeyboardMarkup(rows));
+        SendMessage result = new SendMessage();
+        result.setChatId(callbackQuery.getMessage().getChatId().toString());
+        result.setText("Как переводится слово \"" + testQuestion.getText() + "\"?");
+        result.setReplyMarkup(new InlineKeyboardMarkup(rows));
 
-        return editMessageText;
+        return result;
     }
 
     @Override
